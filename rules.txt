@@ -1,0 +1,9 @@
+https://rules.sonarsource.com/javascript/RSPEC-131/
+https://rules.sonarsource.com/javascript/RSPEC-1121/
+https://rules.sonarsource.com/javascript/RSPEC-128/
+https://rules.sonarsource.com/javascript/RSPEC-1874/
+https://rules.sonarsource.com/javascript/RSPEC-905/
+https://rules.sonarsource.com/javascript/RSPEC-1143/
+https://rules.sonarsource.com/javascript/RSPEC-1763/
+https://rules.sonarsource.com/javascript/RSPEC-1854/
+https://rules.sonarsource.com/javascript/RSPEC-2486/
