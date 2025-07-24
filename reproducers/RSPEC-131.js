@@ -1,4 +1,41 @@
 // RSPEC-131: "switch" statements should have "default" clauses
+
+
+// Noncompliant code example
+switch (param) {  //missing default clause
+  case 0:
+    doSomething();
+    break;
+  case 1:
+    doSomethingElse();
+    break;
+}
+
+switch (param) {
+  default: // default clause should be the last one
+    error();
+    break;
+  case 0:
+    doSomething();
+    break;
+  case 1:
+    doSomethingElse();
+    break;
+}
+
+// Compliant code example
+switch (param) {
+  case 0:
+    doSomething();
+    break;
+  case 1:
+    doSomethingElse();
+    break;
+  default:
+    error();
+    break;
+}
+
 function processValue(value) {
     let result = "";
     

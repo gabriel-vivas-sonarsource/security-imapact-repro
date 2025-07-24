@@ -3,6 +3,43 @@
 
 // ===== "switch" statements should have "default" clauses =====
 // RSPEC-131: "switch" statements should have "default" clauses
+
+
+// Noncompliant code example
+switch (param) {  //missing default clause
+  case 0:
+    doSomething();
+    break;
+  case 1:
+    doSomethingElse();
+    break;
+}
+
+switch (param) {
+  default: // default clause should be the last one
+    error();
+    break;
+  case 0:
+    doSomething();
+    break;
+  case 1:
+    doSomethingElse();
+    break;
+}
+
+// Compliant code example
+switch (param) {
+  case 0:
+    doSomething();
+    break;
+  case 1:
+    doSomethingElse();
+    break;
+  default:
+    error();
+    break;
+}
+
 function processValue(value) {
     let result = "";
     
@@ -67,6 +104,50 @@ example();
 
 // ===== Switch cases should end with an unconditional "break" statement =====
 // RSPEC-128: Switch cases should end with an unconditional "break" statement
+
+// Noncompliant code example
+switch (myVariable) {
+  case 1:
+    foo();
+    break;
+  case 2:  // Both 'doSomething()' and 'doSomethingElse()' will be executed. Is it on purpose ?
+    doSomething();
+  default:
+    doSomethingElse();
+    break;
+}
+
+// Compliant code example
+switch (myVariable) {
+  case 1:
+    foo();
+    break;
+  case 2:
+    doSomething();
+    break;
+  default:
+    doSomethingElse();
+    break;
+}
+
+// Exceptions
+switch (myVariable) {
+  case 0:                                // Empty case used to specify the same behavior for a group of cases.
+  case 1:
+    doSomething();
+    break;
+  case 2:                                // Use of return statement
+    return;
+  case 3:                               // Ends with comment when fall-through is intentional
+    console.log("this case falls through")
+    // fall through
+  case 4:                                // Use of throw statement
+    throw new IllegalStateException();
+  case 5:                                // Use of continue statement
+    continue;
+  default:                               // For the last case, use of break statement is optional
+    doSomethingElse();
+}
 
 function processValue(value) {
     let result = "";
