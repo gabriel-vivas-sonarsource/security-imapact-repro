@@ -1,8 +1,8 @@
 // RSPEC-1854: Unused assignments should be removed
 function example() {
-    var x = 5; // Noncompliant - x is assigned but never used
-    var y = 10; 
-    var z = 15; // Noncompliant - z is assigned but value is overwritten without being used
+    const x = 5; // Noncompliant - x is assigned but never used
+    const y = 10; 
+    let z = 15; // Noncompliant - z is assigned but value is overwritten without being used
     
     z = 20; // This overwrites z without using the previous value
     
@@ -11,10 +11,10 @@ function example() {
 }
 
 function anotherExample() {
-    var result = "initial"; // Noncompliant - assigned but immediately overwritten
+    let result = "initial"; // Noncompliant - assigned but immediately overwritten
     result = "final";
     
-    var temp = getValue(); // Noncompliant - assigned but never used
+    const temp = getValue(); // Noncompliant - assigned but never used
     
     return result;
 }

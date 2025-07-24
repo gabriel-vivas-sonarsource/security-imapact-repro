@@ -1,7 +1,7 @@
 // RSPEC-905: Non-empty statements should change control flow or have at least one side-effect
 function example() {
-    var x = 5;
-    var y = 10;
+    const x = 5;
+    const y = 10;
     
     // Noncompliant - statement has no side effect
     x + y;

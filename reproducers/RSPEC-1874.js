@@ -1,7 +1,7 @@
 // RSPEC-1874: "for...in" loops should filter properties
 function processObject(obj) {
     // Noncompliant - no filtering of inherited properties
-    for (var prop in obj) {
+    for (const prop in obj) {
         console.log(prop + ": " + obj[prop]);
     }
 }
@@ -21,5 +21,5 @@ function Child() {
 Child.prototype = Object.create(Parent.prototype);
 Child.prototype.constructor = Child;
 
-var instance = new Child();
+const instance = new Child();
 processObject(instance); // Will include inherited properties

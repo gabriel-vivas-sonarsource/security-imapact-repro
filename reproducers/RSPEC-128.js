@@ -1,6 +1,6 @@
 // RSPEC-128: Switch cases should end with an unconditional "break" statement
 function processValue(value) {
-    var result = "";
+    let result = "";
     
     switch (value) {
         case 1:

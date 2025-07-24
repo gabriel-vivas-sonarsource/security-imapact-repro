@@ -5,7 +5,7 @@ function example(condition) {
         console.log("This will never execute"); // Noncompliant - unreachable code after return
     }
     
-    for (var i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
         if (i === 5) {
             break;
             console.log("This will never execute"); // Noncompliant - unreachable code after break

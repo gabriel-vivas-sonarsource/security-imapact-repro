@@ -5,7 +5,7 @@
 // RSPEC-131: Assignment operators should not be used in sub-expressions
 // Noncompliant: assignment in sub-expression
 function test() {
-    var x;
+    let x;
     if (x = getValue()) { // Noncompliant - assignment in condition
         console.log(x);
     }
@@ -34,7 +34,7 @@ test();
 // RSPEC-1121: Assignments should not be made from within sub-expressions
 // Noncompliant examples
 function example() {
-    var a, b, c;
+    let a, b, c;
     
     // Noncompliant - assignment in condition
     if (a = b) {
@@ -45,7 +45,7 @@ function example() {
     doSomething(a = 5);
     
     // Noncompliant - assignment in array literal
-    var arr = [b = 10, c = 20];
+    const arr = [b = 10, c = 20];
     
     console.log(arr);
 }
@@ -59,7 +59,7 @@ example();
 // ===== Switch cases should end with an unconditional "break" statement =====
 // RSPEC-128: Switch cases should end with an unconditional "break" statement
 function processValue(value) {
-    var result = "";
+    let result = "";
     
     switch (value) {
         case 1:
@@ -87,7 +87,7 @@ console.log(processValue(3)); // Will output "three"
 // RSPEC-1874: "for...in" loops should filter properties
 function processObject(obj) {
     // Noncompliant - no filtering of inherited properties
-    for (var prop in obj) {
+    for (const prop in obj) {
         console.log(prop + ": " + obj[prop]);
     }
 }
@@ -107,14 +107,14 @@ function Child() {
 Child.prototype = Object.create(Parent.prototype);
 Child.prototype.constructor = Child;
 
-var instance = new Child();
+const instance = new Child();
 processObject(instance); // Will include inherited properties
 
 // ===== Non-empty statements should change control flow or have at least one side-effect =====
 // RSPEC-905: Non-empty statements should change control flow or have at least one side-effect
 function example() {
-    var x = 5;
-    var y = 10;
+    const x = 5;
+    const y = 10;
     
     // Noncompliant - statement has no side effect
     x + y;
@@ -174,7 +174,7 @@ function example(condition) {
         console.log("This will never execute"); // Noncompliant - unreachable code after return
     }
     
-    for (var i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
         if (i === 5) {
             break;
             console.log("This will never execute"); // Noncompliant - unreachable code after break
@@ -196,9 +196,9 @@ example(false);
 // ===== Unused assignments should be removed =====
 // RSPEC-1854: Unused assignments should be removed
 function example() {
-    var x = 5; // Noncompliant - x is assigned but never used
-    var y = 10; 
-    var z = 15; // Noncompliant - z is assigned but value is overwritten without being used
+    const x = 5; // Noncompliant - x is assigned but never used
+    const y = 10; 
+    let z = 15; // Noncompliant - z is assigned but value is overwritten without being used
     
     z = 20; // This overwrites z without using the previous value
     
@@ -207,10 +207,10 @@ function example() {
 }
 
 function anotherExample() {
-    var result = "initial"; // Noncompliant - assigned but immediately overwritten
+    let result = "initial"; // Noncompliant - assigned but immediately overwritten
     result = "final";
     
-    var temp = getValue(); // Noncompliant - assigned but never used
+    const temp = getValue(); // Noncompliant - assigned but never used
     
     return result;
 }

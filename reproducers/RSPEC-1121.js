@@ -1,7 +1,7 @@
 // RSPEC-1121: Assignments should not be made from within sub-expressions
 // Noncompliant examples
 function example() {
-    var a, b, c;
+    let a, b, c;
     
     // Noncompliant - assignment in condition
     if (a = b) {
@@ -12,7 +12,7 @@ function example() {
     doSomething(a = 5);
     
     // Noncompliant - assignment in array literal
-    var arr = [b = 10, c = 20];
+    const arr = [b = 10, c = 20];
     
     console.log(arr);
 }

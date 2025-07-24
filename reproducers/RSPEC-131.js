@@ -1,7 +1,7 @@
 // RSPEC-131: Assignment operators should not be used in sub-expressions
 // Noncompliant: assignment in sub-expression
 function test() {
-    var x;
+    let x;
     if (x = getValue()) { // Noncompliant - assignment in condition
         console.log(x);
     }
