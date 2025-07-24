@@ -1,0 +1,21 @@
+{
+  "name": "security-imapact-repro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "combined_reproducers.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabriel-vivas-sonarsource/security-imapact-repro.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/gabriel-vivas-sonarsource/security-imapact-repro/issues"
+  },
+  "homepage": "https://github.com/gabriel-vivas-sonarsource/security-imapact-repro#readme"
+}
