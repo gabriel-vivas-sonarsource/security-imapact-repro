@@ -1,27 +1,36 @@
-// RSPEC-131: Assignment operators should not be used in sub-expressions
-// Noncompliant: assignment in sub-expression
-function test() {
-    let x;
-    if (x = getValue()) { // Noncompliant - assignment in condition
-        console.log(x);
+// RSPEC-131: "switch" statements should have "default" clauses
+function processValue(value) {
+    let result = "";
+    
+    // Noncompliant - missing default clause
+    switch (value) {
+        case 1:
+            result = "one";
+            break;
+        case 2:
+            result = "two";
+            break;
+        case 3:
+            result = "three";
+            break;
+        // Missing default clause
     }
     
-    // Another noncompliant example
-    while (x = getNextValue()) { // Noncompliant
-        process(x);
+    return result;
+}
+
+function anotherExample(status) {
+    // Another noncompliant switch without default
+    switch (status) {
+        case "active":
+            console.log("Status is active");
+            break;
+        case "inactive":
+            console.log("Status is inactive");
+            break;
     }
 }
 
-function getValue() {
-    return Math.random() > 0.5 ? "hello" : null;
-}
-
-function getNextValue() {
-    return Math.random() > 0.8 ? null : Math.floor(Math.random() * 100);
-}
-
-function process(value) {
-    console.log("Processing:", value);
-}
-
-test();
+console.log(processValue(1));
+console.log(processValue(99)); // Will return empty string
+anotherExample("unknown");

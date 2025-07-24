@@ -1,34 +1,43 @@
 // Combined SonarQube Rules Test File
 // Contains reproducers for multiple JavaScript rules
 
-// ===== Assignment operators should not be used in sub-expressions =====
-// RSPEC-131: Assignment operators should not be used in sub-expressions
-// Noncompliant: assignment in sub-expression
-function test() {
-    let x;
-    if (x = getValue()) { // Noncompliant - assignment in condition
-        console.log(x);
+// ===== "switch" statements should have "default" clauses =====
+// RSPEC-131: "switch" statements should have "default" clauses
+function processValue(value) {
+    let result = "";
+    
+    // Noncompliant - missing default clause
+    switch (value) {
+        case 1:
+            result = "one";
+            break;
+        case 2:
+            result = "two";
+            break;
+        case 3:
+            result = "three";
+            break;
+        // Missing default clause
     }
     
-    // Another noncompliant example
-    while (x = getNextValue()) { // Noncompliant
-        process(x);
+    return result;
+}
+
+function anotherExample(status) {
+    // Another noncompliant switch without default
+    switch (status) {
+        case "active":
+            console.log("Status is active");
+            break;
+        case "inactive":
+            console.log("Status is inactive");
+            break;
     }
 }
 
-function getValue() {
-    return Math.random() > 0.5 ? "hello" : null;
-}
-
-function getNextValue() {
-    return Math.random() > 0.8 ? null : Math.floor(Math.random() * 100);
-}
-
-function process(value) {
-    console.log("Processing:", value);
-}
-
-test();
+console.log(processValue(1));
+console.log(processValue(99)); // Will return empty string
+anotherExample("unknown");
 
 // ===== Assignments should not be made from within sub-expressions =====
 // RSPEC-1121: Assignments should not be made from within sub-expressions
@@ -58,6 +67,7 @@ example();
 
 // ===== Switch cases should end with an unconditional "break" statement =====
 // RSPEC-128: Switch cases should end with an unconditional "break" statement
+
 function processValue(value) {
     let result = "";
     
@@ -73,42 +83,96 @@ function processValue(value) {
             break;
         default:
             result = "unknown";
+            break;
     }
     
     return result;
 }
 
-// Test the function
-console.log(processValue(1)); // Will output "three" instead of "one"
-console.log(processValue(2)); // Will output "three" instead of "two"
-console.log(processValue(3)); // Will output "three"
-
-// ===== "for...in" loops should filter properties =====
-// RSPEC-1874: "for...in" loops should filter properties
-function processObject(obj) {
-    // Noncompliant - no filtering of inherited properties
-    for (const prop in obj) {
-        console.log(prop + ": " + obj[prop]);
+function handleUserAction(action) {
+    switch (action) {
+        case "save":
+            console.log("Saving data...");
+            saveData();
+            // Noncompliant - missing break, will fall through to delete!
+        case "delete":
+            console.log("Deleting data...");
+            deleteData();
+            break;
+        case "cancel":
+            console.log("Operation cancelled");
+            // Noncompliant - missing break
+        default:
+            console.log("Unknown action");
+            break;
     }
 }
 
-// Create object with inherited properties
-function Parent() {
-    this.parentProp = "parent value";
+function calculateScore(grade) {
+    let score = 0;
+    
+    switch (grade) {
+        case "A":
+            score = 100;
+            // Noncompliant - missing break
+        case "B":
+            score = 80;
+            // Noncompliant - missing break  
+        case "C":
+            score = 60;
+            break;
+        case "D":
+            score = 40;
+            // Noncompliant - missing break
+        case "F":
+            score = 0;
+            break;
+    }
+    
+    return score;
 }
 
-Parent.prototype.inheritedProp = "inherited value";
-
-function Child() {
-    Parent.call(this);
-    this.childProp = "child value";
+function saveData() {
+    console.log("Data saved");
 }
 
-Child.prototype = Object.create(Parent.prototype);
-Child.prototype.constructor = Child;
+function deleteData() {
+    console.log("Data deleted");
+}
 
-const instance = new Child();
-processObject(instance); // Will include inherited properties
+// Test the functions
+console.log(processValue(1)); // Will output "three" instead of "one"
+console.log(processValue(2)); // Will output "three" instead of "two"
+handleUserAction("save"); // Will save AND delete!
+console.log(calculateScore("A")); // Will return 60 instead of 100
+
+// ===== Deprecated APIs should not be used =====
+// RSPEC-1874: Deprecated APIs should not be used
+function exampleDeprecatedAPIs() {
+    // Noncompliant - using deprecated escape() function
+    const encoded = escape("hello world"); // Deprecated, use encodeURIComponent instead
+    console.log("Encoded:", encoded);
+    
+    // Noncompliant - using deprecated unescape() function  
+    const decoded = unescape(encoded); // Deprecated, use decodeURIComponent instead
+    console.log("Decoded:", decoded);
+    
+    // Noncompliant - using deprecated String.substr()
+    const text = "Hello World";
+    const substr = text.substr(0, 5); // Deprecated, use substring() or slice() instead
+    console.log("Substring:", substr);
+    
+    // Noncompliant - using deprecated Date methods
+    const date = new Date();
+    const year = date.getYear(); // Deprecated, use getFullYear() instead
+    console.log("Year:", year);
+    
+    // Noncompliant - using deprecated String.fontcolor() 
+    const coloredText = "Hello".fontcolor("red"); // Deprecated HTML wrapper method
+    console.log("Colored text:", coloredText);
+}
+
+exampleDeprecatedAPIs();
 
 // ===== Non-empty statements should change control flow or have at least one side-effect =====
 // RSPEC-905: Non-empty statements should change control flow or have at least one side-effect
@@ -133,38 +197,52 @@ function example() {
 
 example();
 
-// ===== "typeof" should be compared to valid strings =====
-// RSPEC-1143: "typeof" should be compared to valid strings
-function checkTypes(value) {
-    // Noncompliant - invalid typeof comparison
-    if (typeof value === "int") { // "int" is not a valid typeof result
-        console.log("Integer");
-    }
-    
-    // Noncompliant - another invalid typeof comparison
-    if (typeof value === "array") { // "array" is not a valid typeof result
-        console.log("Array");
-    }
-    
-    // Noncompliant - typo in typeof comparison
-    if (typeof value === "undefind") { // typo: should be "undefined"
-        console.log("Undefined");
-    }
-    
-    // More noncompliant examples
-    if (typeof value === "bool") { // should be "boolean"
-        console.log("Boolean");
-    }
-    
-    if (typeof value === "str") { // should be "string"
-        console.log("String");
+// ===== Jump statements should not occur in "finally" blocks =====
+// RSPEC-1143: Jump statements should not occur in "finally" blocks
+function exampleWithReturn() {
+    try {
+        console.log("In try block");
+        return "try result";
+    } catch (e) {
+        console.log("In catch block");
+        return "catch result";
+    } finally {
+        console.log("In finally block");
+        return "finally result"; // Noncompliant - return in finally block
     }
 }
 
-checkTypes(42);
-checkTypes("hello");
-checkTypes(true);
-checkTypes([1, 2, 3]);
+function exampleWithBreak() {
+    for (let i = 0; i < 5; i++) {
+        try {
+            if (i === 2) {
+                throw new Error("Test error");
+            }
+            console.log("Processing:", i);
+        } catch (e) {
+            console.log("Caught error for:", i);
+        } finally {
+            if (i === 3) {
+                break; // Noncompliant - break in finally block
+            }
+        }
+    }
+}
+
+function exampleWithContinue() {
+    for (let i = 0; i < 5; i++) {
+        try {
+            console.log("Before operation:", i);
+        } finally {
+            if (i === 2) {
+                continue; // Noncompliant - continue in finally block  
+            }
+            console.log("Finally block:", i);
+        }
+    }
+}
+
+console.log(exampleWithReturn());
 
 // ===== Jump statements should not be followed by other statements =====
 // RSPEC-1763: Jump statements should not be followed by other statements
